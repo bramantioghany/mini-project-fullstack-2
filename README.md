@@ -1,17 +1,29 @@
-TechStore — Mini Project Fullstack
+Full Stack Web Miniproject: Building Interactivity Website with JavaScript
 
-Aplikasi katalog produk laptop sederhana yang dibangun menggunakan HTML, CSS, JavaScript, Node.js, Express.js, dan MySQL. Proyek ini mendemonstrasikan proses pengambilan data produk dari database melalui REST API dan menampilkannya secara dinamis pada halaman frontend.
+TechStore: Proyek Mini Full Stack
+1. Gambaran Umum Proyek
 
-1. Teknologi yang Digunakan
-Frontend: HTML, CSS, JavaScript
-Backend: Node.js, Express.js
-Database: MySQL 8+
-Database driver: mysql2/promise
-Environment configuration: dotenv
-Cross-Origin Resource Sharing: cors
-Local development server: VS Code Live Server
+TechStore adalah website sederhana yang menampilkan produk laptop dan dikembangkan sebagai bagian dari proyek mini Full Stack Web Development.
 
-2. Struktur Proyek
+Proyek ini mendemonstrasikan bagaimana JavaScript dapat digunakan untuk menambahkan interaktivitas pada sebuah website, termasuk validasi jumlah produk, perhitungan subtotal secara otomatis, fitur Tambahkan ke Keranjang (Add to Cart), serta pengambilan informasi produk melalui REST API.
+
+Proyek ini memiliki dua halaman detail produk dengan sumber data yang berbeda:
+Produk 1 — Laptop A: Informasi produk disimpan secara langsung di JavaScript pada frontend (hardcoded).
+Produk 2 — Laptop B: Informasi produk diambil secara dinamis dari REST API backend yang terhubung dengan database MySQL.
+
+2. Teknologi yang Digunakan
+- HTML5
+- CSS3
+- JavaScript (Vanilla JS)
+- Node.js
+- Express.js
+- MySQL
+- REST API
+- Fetch API
+- Git
+
+3. Struktur Proyek
+text
 mini-project-fullstack-1/
 ├── backend/
 │   ├── config/
@@ -23,484 +35,256 @@ mini-project-fullstack-1/
 │   ├── routes/
 │   │   └── productRoutes.js
 │   ├── .env
-│   ├── server.js
-│   ├── test-db.js
-│   └── package.json
-│
+│   ├── .env.example
+│   ├── package.json
+│   └── server.js
+├── database/
+│   └── products.sql
 ├── frontend/
-│   ├── product-2.html
-│   └── product-2.js
-│
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   ├── product-1.js
+│   │   └── product-2.js
+│   ├── index.html
+│   ├── product-1.html
+│   └── product-2.html
+├── .gitignore
 └── README.md
 
-Catatan: Struktur di atas menggambarkan susunan file yang digunakan atau dibahas selama pengembangan. Sesuaikan nama file dan folder apabila implementasi aktual proyek berbeda.
+4. Informasi Produk
+Produk	Harga	Stok	Sumber Data
+Laptop A	Rp8.500.000	8 unit	JavaScript (Hardcoded)
+Laptop B	Rp12.000.000	5 unit	MySQL melalui REST API
+5. Fitur dan Interaktivitas
 
-3. Persiapan Lingkungan
+Kedua halaman detail produk menyediakan fitur-fitur berikut:
 
-Pastikan perangkat sudah memiliki:
+Input Jumlah Produk (Quantity Input)
+
+Pengguna dapat menentukan jumlah produk yang ingin ditambahkan ke keranjang belanja.
+
+Validasi Jumlah Produk (Quantity Validation)
+
+Aplikasi melakukan validasi terhadap input pengguna untuk memastikan bahwa:
+
+- Jumlah produk tidak boleh kosong.
+- Jumlah produk harus berupa bilangan bulat positif.
+- Jumlah produk tidak boleh melebihi stok yang tersedia.
+- Jumlah produk yang tidak valid tidak dapat ditambahkan ke keranjang.
+- Perhitungan Subtotal Otomatis (Automatic Subtotal Calculation)
+
+Subtotal akan diperbarui secara otomatis setiap kali jumlah produk berubah.
+
+Rumus:
+
+text
+Subtotal = Harga Produk × Jumlah Produk
+
+Tambahkan ke Keranjang (Add to Cart)
+
+Pengguna dapat menambahkan produk ke keranjang belanja lokal. Jumlah item pada keranjang akan diperbarui berdasarkan jumlah produk yang dimasukkan.
+
+Fitur keranjang belanja diimplementasikan menggunakan variabel JavaScript dan tidak disimpan secara permanen ke database maupun local storage.
+
+Pertanyaan Produk (Product Inquiry)
+
+Tombol "Tanyakan Produk" menampilkan respons interaktif berdasarkan produk yang dipilih.
+
+Integrasi API — Produk 2
+
+Laptop B mengambil informasi produknya dari endpoint berikut:
+
+http
+GET http://localhost:3000/api/products/2
+
+
+Frontend menggunakan Fetch API dengan async/await untuk mengambil dan menampilkan informasi produk.
+
+Aplikasi juga menangani beberapa kondisi berikut:
+
+
+- Status pemuatan data dari API (API loading state).
+- Respons API yang berhasil.
+- Kesalahan HTTP dan jaringan.
+- Fitur mencoba kembali (retry functionality) ketika permintaan API gagal.
+
+
+6. Instalasi dan Konfigurasi
+Persyaratan Awal (Prerequisites)
+
+Pastikan perangkat lunak berikut sudah terinstal:
 
 Node.js dan npm.
-XAMPP dengan MySQL aktif.
-Visual Studio Code atau editor kode lainnya.
-Browser untuk menjalankan frontend.
-Ekstensi Live Server jika menggunakan VS Code.
+MySQL Server.
+Web browser.
+Editor kode seperti Visual Studio Code.
+Langkah 1 — Clone Repository
+bash
+git clone <repository-url>
+cd mini-project-fullstack-1
 
-Periksa instalasi Node.js dan npm melalui PowerShell:
+Langkah 2 — Konfigurasi Database
+Jalankan MySQL Server.
+Buka MySQL Workbench atau aplikasi klien MySQL lainnya.
+Jalankan skrip SQL berikut:
+text
+database/products.sql
 
-node --version
-npm --version
+Pastikan database mini_project_db dan tabel products berhasil dibuat.
+Langkah 3 — Konfigurasi Backend
 
-4. Menyiapkan Database MySQL
-4.1 Menjalankan XAMPP
-Buka XAMPP Control Panel.
-Klik Start pada Apache.
-Klik Start pada MySQL.
-Pastikan kedua service berjalan.
+Masuk ke direktori backend:
 
-Buka phpMyAdmin melalui:
-
-http://localhost/phpmyadmin
-
-4.2 Membuat database dan tabel
-
-Buka tab SQL, kemudian jalankan skrip berikut.
-
-CREATE DATABASE IF NOT EXISTS mini_project_db
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
-USE mini_project_db;
-
-CREATE TABLE IF NOT EXISTS products (
-  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  name VARCHAR(150) NOT NULL,
-  price DECIMAL(12, 2) UNSIGNED NOT NULL,
-  description TEXT NOT NULL,
-  processor VARCHAR(100) NOT NULL,
-  memory VARCHAR(100) NOT NULL,
-  storage VARCHAR(100) NOT NULL,
-  stock INT UNSIGNED NOT NULL DEFAULT 0,
-  image_url VARCHAR(500) NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id)
-);
-
-INSERT INTO products (
-  id, name, price, description,
-  processor, memory, storage, stock, image_url
-)
-VALUES
-(
-  1, 'Laptop A', 8500000.00,
-  'Laptop untuk produktivitas harian, belajar, dan pekerjaan kantor.',
-  'Intel Core i5', 'RAM 16 GB', 'SSD 512 GB', 8, NULL
-),
-(
-  2, 'Laptop B', 12000000.00,
-  'Laptop untuk multitasking, pekerjaan kreatif, dan produktivitas tingkat lanjut.',
-  'Intel Core i7', 'RAM 16 GB', 'SSD 1 TB', 5, NULL
-)
-ON DUPLICATE KEY UPDATE
-  name = VALUES(name),
-  price = VALUES(price),
-  description = VALUES(description),
-  processor = VALUES(processor),
-  memory = VALUES(memory),
-  storage = VALUES(storage),
-  stock = VALUES(stock),
-  image_url = VALUES(image_url);
-
-4.3 Memeriksa data produk
-
-Jalankan query:
-
-USE mini_project_db;
-
-SELECT * FROM products WHERE id = 2;
+bash
+cd backend
 
 
-Data yang diharapkan adalah Laptop B dengan harga Rp12.000.000, prosesor Intel Core i7, RAM 16 GB, SSD 1 TB, dan stok 5 unit.
+Instal seluruh dependencies:
 
-5. Konfigurasi Backend
-5.1 File environment
-
-Buat atau periksa file backend/.env.
-
-PORT=3000
-
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=mini_project_db
-
-
-Konfigurasi tersebut sesuai dengan lingkungan XAMPP lokal apabila akun root memang tidak menggunakan password.
-
-Penting: sesuaikan username dan password dengan konfigurasi MySQL pada perangkat masing-masing. Jangan menggunakan konfigurasi akun tanpa password untuk lingkungan produksi.
-
-Pastikan .env tidak dimasukkan ke version control. Tambahkan ke .gitignore:
-
-backend/.env
-backend/node_modules/
-
-5.2 Instalasi dependency
-
-Buka PowerShell di folder backend:
-
+bash
 npm install
 
 
-Jika paket yang dibutuhkan belum tersedia, instal:
+Konfigurasikan file .env dengan menggunakan .env.example sebagai referensi. Pastikan kredensial database dan pengaturan koneksi sudah sesuai dengan konfigurasi MySQL lokal.
 
-npm install express mysql2 dotenv cors
+Jalankan backend menggunakan perintah yang telah ditentukan dalam file backend/package.json. Jika proyek menggunakan file utama Node.js secara langsung, jalankan perintah:
 
-5.3 Konfigurasi koneksi database
+bash
+node server.js
 
-File backend/config/database.js bertanggung jawab membuat connection pool MySQL.
 
-const mysql = require("mysql2/promise");
+Backend seharusnya dapat diakses melalui alamat:
 
-const requiredVariables = ["DB_HOST", "DB_USER", "DB_NAME"];
-const missingVariables = requiredVariables.filter(
-  (key) => !process.env[key]
-);
+text
+http://localhost:3000
 
-if (missingVariables.length > 0) {
-  throw new Error(
-    `Konfigurasi database belum lengkap. Periksa variabel: ${missingVariables.join(", ")}`
-  );
-}
+Langkah 4 — Menjalankan Frontend
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT) || 3306,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
+Buka proyek menggunakan server pengembangan lokal (local development server), seperti ekstensi Live Server pada Visual Studio Code.
 
-module.exports = pool;
+Buka halaman berikut:
 
+frontend/index.html
+frontend/product-1.html
+frontend/product-2.html
 
-Pastikan dotenv dimuat sebelum file konfigurasi database diimpor, misalnya pada bagian awal server.js:
+Pastikan backend sedang berjalan ketika mengakses halaman Produk 2.
 
-require("dotenv").config();
+7. Dokumentasi Pengujian
+Pengujian dilakukan untuk memastikan seluruh fitur interaktif pada halaman produk berjalan sesuai dengan yang diharapkan, termasuk validasi jumlah produk, perhitungan subtotal, fitur keranjang belanja, serta integrasi dan penanganan kesalahan API.
 
-5.4 Model produk
+Berikut adalah skenario pengujian yang digunakan:
 
-File backend/models/productModel.js berisi query database untuk mengambil produk.
+1. Pengujian Tampilan dan Pemuatan Produk
+Skenario 1 — Memuat Produk 1
 
-const pool = require("../config/database");
+Kondisi: Membuka halaman product-1.html.
+Hasil yang diharapkan: Informasi Laptop A berhasil ditampilkan pada halaman produk.
+Status: Belum diuji.
+Skenario 2 — Memuat Produk 2
 
-async function findAll() {
-  const [rows] = await pool.execute(
-    `SELECT id, name, price, description, processor, memory,
-            storage, stock, image_url
-     FROM products
-     ORDER BY id ASC`
-  );
+Kondisi: Membuka halaman product-2.html ketika backend sedang berjalan.
+Hasil yang diharapkan: Informasi Laptop B berhasil diambil dari REST API dan ditampilkan pada halaman produk.
+Status: Belum diuji.
 
-  return rows;
-}
+2. Pengujian Validasi Jumlah Produk (Quantity Validation)
+Skenario 3 — Input Jumlah Produk Valid
 
-async function findById(id) {
-  const [rows] = await pool.execute(
-    `SELECT id, name, price, description, processor, memory,
-            storage, stock, image_url
-     FROM products
-     WHERE id = ?`,
-    [id]
-  );
+Kondisi: Memasukkan bilangan bulat positif yang tidak melebihi stok tersedia.
+Hasil yang diharapkan: Input diterima oleh aplikasi.
+Status: Belum diuji.
+Skenario 4 — Input Kosong
 
-  return rows[0] || null;
-}
+Kondisi: Membiarkan kolom jumlah produk kosong.
+Hasil yang diharapkan: Aplikasi menampilkan pesan validasi bahwa jumlah produk tidak boleh kosong.
+Status: Belum diuji.
+Skenario 5 — Input Nol
 
-module.exports = { findAll, findById };
+Kondisi: Memasukkan angka 0.
+Hasil yang diharapkan: Aplikasi menolak input dan menampilkan pesan validasi.
+Status: Belum diuji.
+Skenario 6 — Input Negatif
 
+Kondisi: Memasukkan angka -1.
+Hasil yang diharapkan: Aplikasi menolak input dan menampilkan pesan validasi.
+Status: Belum diuji.
+Skenario 7 — Input Desimal
 
-Penggunaan parameter ? dengan pool.execute() membantu mencegah SQL injection dengan memisahkan nilai input dari pernyataan SQL.
+Kondisi: Memasukkan angka 1.5.
+Hasil yang diharapkan: Aplikasi menolak input karena jumlah produk harus berupa bilangan bulat.
+Status: Belum diuji.
+Skenario 8 — Jumlah Produk Melebihi Stok
 
-5.5 Controller dan route
+Kondisi: Memasukkan jumlah produk yang melebihi stok tersedia.
+Hasil yang diharapkan: Aplikasi menampilkan pesan kesalahan validasi stok dan menolak penambahan produk ke keranjang.
+Status: Belum diuji.
 
-Alur endpoint detail produk menggunakan controller untuk memanggil model dan mengirimkan hasilnya sebagai JSON. Route menghubungkan URL API dengan controller.
+3. Pengujian Perhitungan Subtotal
+Skenario 9 — Perhitungan Subtotal Otomatis
 
-Pemetaan endpoint yang digunakan:
+Kondisi: Mengubah jumlah produk ke nilai yang valid.
+Hasil yang diharapkan: Subtotal diperbarui secara otomatis berdasarkan harga produk dan jumlah yang dimasukkan.
+Status: Belum diuji.
 
-Method	Endpoint	Fungsi
-GET	/api/products	Mengambil daftar produk
-GET	/api/products/:id	Mengambil detail produk berdasarkan ID
+4. Pengujian Fitur Keranjang Belanja (Add to Cart)
+Skenario 10 — Menambahkan Produk ke Keranjang
 
-Nama file, pemetaan route, dan implementasi controller harus mengikuti kode aktual pada proyek.
+Kondisi: Memasukkan jumlah produk yang valid, kemudian mengklik tombol "Add to Cart".
+Hasil yang diharapkan: Produk berhasil ditambahkan ke keranjang lokal dan jumlah item keranjang bertambah sesuai jumlah yang dimasukkan.
+Status: Belum diuji.
 
-5.6 Konfigurasi CORS
+5. Pengujian Fitur Pertanyaan Produk (Product Inquiry)
+Skenario 11 — Tombol Tanyakan Produk
 
-Karena frontend berjalan di port 5500 dan backend berjalan di port 3000, browser menganggap keduanya berbeda origin.
+Kondisi: Mengklik tombol "Tanyakan Produk".
+Hasil yang diharapkan: Aplikasi menampilkan respons interaktif berdasarkan produk yang dipilih.
+Status: Belum diuji.
 
-Pastikan server.js memasang middleware CORS sebelum route API:
+6. Pengujian Integrasi dan Penanganan Kesalahan API
+Skenario 12 — Penanganan Kesalahan API
 
-const cors = require("cors");
+Kondisi: Menghentikan backend, kemudian membuka halaman Produk 2 atau mencoba kembali memuat data.
+Hasil yang diharapkan: Aplikasi menampilkan pesan kesalahan dan tombol "Coba Lagi".
+Status: Belum diuji.
+Skenario 13 — Mencoba Kembali Koneksi API
 
-app.use(cors({
-  origin: [
-    "http://127.0.0.1:5500",
-    "http://localhost:5500"
-  ]
-}));
+Kondisi: Menjalankan kembali backend, kemudian mengklik tombol "Coba Lagi".
+Hasil yang diharapkan: Permintaan API berhasil dan informasi Laptop B ditampilkan pada halaman Produk 2.
+Status: Belum diuji.
+Bukti Pengujian
+Tangkapan layar (screenshot) atau hasil tampilan dari browser dapat ditambahkan sebagai bukti pendukung untuk setiap skenario pengujian.
 
+Bukti tersebut digunakan untuk menunjukkan bahwa setiap fitur telah diuji dan berjalan sesuai dengan hasil yang diharapkan.
 
-Tambahkan konfigurasi tersebut pada aplikasi Express yang sudah ada. Jangan membuat instance app kedua hanya untuk memasang CORS.
+8. Pernyataan Penggunaan AI (AI Usage Disclosure)
 
-Batasi daftar origin sesuai alamat frontend yang benar-benar digunakan.
+AI digunakan sebagai asisten selama proses pengembangan proyek, khususnya untuk membantu implementasi dan penyempurnaan interaktivitas JavaScript serta fitur-fitur produk.
 
-6. Menjalankan Backend
+Bantuan yang diberikan meliputi:
 
-Dari folder backend, jalankan:
+- Panduan dalam mengimplementasikan validasi jumlah produk.
+- Bantuan dalam membuat perhitungan subtotal secara otomatis.
+- Panduan dalam mengimplementasikan fitur Tambahkan ke Keranjang (Add to Cart).
+- Bantuan dalam mengintegrasikan interaksi produk ke halaman produk yang menggunakan API sebagai sumber data.
+- Saran dalam menangani status pemuatan API, kesalahan, dan percobaan ulang (retry).
+- Panduan peninjauan kode (code review) dan proses debugging.
 
-npm run dev
+AI berperan sebagai asisten pengembangan sekaligus pendamping pembelajaran. Implementasi proyek, penyesuaian kode, eksekusi, dan pengujian dilakukan oleh pengembang.
 
+9. Ruang Lingkup dan Batasan Proyek
 
-Jika berhasil, terminal akan menampilkan pesan:
+Proyek ini berfokus pada implementasi interaktivitas frontend dan integrasi dasar API backend.
 
-TechStore berjalan di http://localhost:3000
+Beberapa fitur yang belum termasuk dalam ruang lingkup proyek ini adalah:
 
+- Autentikasi pengguna (user authentication).
+- Keranjang belanja yang menyimpan data secara permanen (persistent shopping cart).
+- Proses checkout dan pembayaran.
+- Manajemen pesanan (order management).
+- Pengurangan stok setelah produk ditambahkan ke keranjang.
+- Fitur Tambahkan ke Keranjang saat ini hanya merupakan demonstrasi pada sisi frontend dan belum menghasilkan transaksi yang sebenarnya.
 
-Jika muncul EADDRINUSE, artinya port 3000 sedang digunakan. Hentikan server lama dengan Ctrl + C pada terminal yang sesuai sebelum menjalankan instance baru.
-
-7. Menguji Koneksi Database dan API
-7.1 Tes koneksi database
-
-Jika file test-db.js tersedia, jalankan:
-
-node test-db.js
-
-
-Hasil yang diharapkan:
-
-Database terhubung: { db: 'mini_project_db', test: 1 }
-
-
-Jika hasil berbeda, periksa status MySQL, konfigurasi .env, kredensial, dan keberadaan database.
-
-7.2 Tes endpoint detail produk
-
-Buka URL berikut:
-
-http://localhost:3000/api/products/2
-
-Respons yang diharapkan:
-
-{
-  "id": 2,
-  "name": "Laptop B",
-  "price": "12000000.00",
-  "description": "Laptop untuk multitasking, pekerjaan kreatif, dan produktivitas tingkat lanjut.",
-  "processor": "Intel Core i7",
-  "memory": "RAM 16 GB",
-  "storage": "SSD 1 TB",
-  "stock": 5,
-  "image_url": null
-}
-
-
-Nilai harga dapat berupa string karena kolom MySQL menggunakan tipe DECIMAL. Frontend mengubahnya menjadi angka sebelum memformat harga rupiah.
-
-8. Menjalankan Frontend
-
-Buka folder proyek di Visual Studio Code.
-
-Pastikan backend masih berjalan pada port 3000.
-Buka frontend/product-2.html.
-Klik kanan file tersebut.
-Pilih Open with Live Server.
-
-Frontend akan dapat diakses melalui:
-
-http://127.0.0.1:5500/frontend/product-2.html
-
-Konfigurasi URL API
-
-Di frontend/product-2.js, gunakan URL backend yang benar:
-
-const API_URL = "http://localhost:3000/api/products/2";
-
-
-Jangan menggunakan URL relatif /api/products/2 apabila frontend dilayani langsung oleh Live Server tanpa proxy API. URL relatif tersebut akan diarahkan ke port 5500, bukan 3000.
-
-9. Alur Lengkap API product-2.html
-
-Bagian ini menjelaskan proses pengambilan data Laptop B dari database sampai tampil di browser.
-
-Tahap 1 — Browser membuka halaman
-
-Pengguna membuka:
-
-http://127.0.0.1:5500/frontend/product-2.html
-
-
-File HTML memuat JavaScript yang menangani detail produk, yaitu product-2.js.
-
-Tahap 2 — JavaScript memanggil API
-
-Saat file JavaScript dijalankan, fungsi loadProduct() memanggil:
-
-const response = await fetch(
-  "http://localhost:3000/api/products/2"
-);
-
-
-Permintaan HTTP GET dikirimkan ke backend untuk mengambil produk dengan ID 2.
-
-Tahap 3 — Express menerima permintaan
-
-Express mencocokkan permintaan dengan route detail produk dan memanggil controller terkait.
-
-Controller mengambil parameter ID dari URL, kemudian memanggil fungsi model untuk mengambil produk.
-
-Tahap 4 — Model menjalankan query SQL
-
-Fungsi findById(id) menjalankan query:
-
-SELECT id, name, price, description, processor,
-       memory, storage, stock, image_url
-FROM products
-WHERE id = ?;
-
-
-Nilai parameter yang dikirim adalah 2.
-
-MySQL mencari produk dengan ID tersebut pada tabel products di database mini_project_db.
-
-Tahap 5 — Backend mengembalikan JSON
-
-Jika produk ditemukan, backend mengirimkan data sebagai respons JSON dengan status HTTP yang sesuai.
-
-Contoh data penting yang dikembalikan:
-
-{
-  "id": 2,
-  "name": "Laptop B",
-  "price": "12000000.00",
-  "processor": "Intel Core i7",
-  "memory": "RAM 16 GB",
-  "storage": "SSD 1 TB",
-  "stock": 5
-}
-
-Tahap 6 — Frontend membaca respons
-
-JavaScript memeriksa status respons:
-
-if (!response.ok) {
-  throw new Error(`Request gagal (${response.status})`);
-}
-
-const product = await response.json();
-
-
-Jika permintaan gagal, penanganan error mengarahkan proses ke blok catch.
-
-Jika berhasil, objek product berisi data dari backend.
-
-Tahap 7 — JavaScript mengisi elemen HTML
-
-Data produk dimasukkan ke elemen halaman menggunakan textContent:
-
-elements.name.textContent = product.name;
-elements.price.textContent = formatRupiah(product.price);
-elements.description.textContent = product.description;
-elements.processor.textContent = product.processor;
-elements.memory.textContent = product.memory;
-elements.storage.textContent = product.storage;
-
-
-Penggunaan textContent membantu mencegah teks dari API diperlakukan sebagai markup HTML.
-
-Fungsi formatRupiah() memformat nilai harga menjadi format mata uang Indonesia, misalnya Rp12.000.000.
-
-Tahap 8 — Detail produk ditampilkan
-
-Jika seluruh proses berhasil:
-
-elements.detail.hidden = false;
-elements.status.hidden = true;
-
-
-Bagian detail produk ditampilkan, sedangkan pesan status error disembunyikan.
-
-10. Ringkasan Aliran Data
-Browser
-   |
-   v
-product-2.html
-   |
-   v
-product-2.js
-   |
-   | GET /api/products/2
-   v
-Express.js
-   |
-   v
-productController.js
-   |
-   v
-productModel.js
-   |
-   v
-MySQL: mini_project_db
-   |
-   | Data Laptop B
-   v
-JSON Response
-   |
-   v
-product-2.js
-   |
-   v
-Elemen HTML diperbarui
-   |
-   v
-Detail Laptop B tampil
-
-11. Troubleshooting
-Error	Kemungkinan penyebab	Solusi
-ECONNREFUSED	MySQL belum berjalan atau port salah	Periksa service MySQL dan port 3306
-ER_ACCESS_DENIED_ERROR	Kredensial MySQL tidak sesuai	Periksa DB_USER dan DB_PASSWORD
-ER_BAD_DB_ERROR	Database belum tersedia	Buat mini_project_db dan tabelnya
-EADDRINUSE	Port backend sudah digunakan	Hentikan server lama atau periksa proses yang memakai port 3000
-404 Not Found pada port 5500	URL API relatif mengarah ke frontend	Gunakan URL backend http://localhost:3000/api/products/2
-CORS policy error	Origin frontend belum diizinkan	Konfigurasikan middleware CORS di Express
-Failed to fetch	Permintaan gagal atau diblokir browser	Periksa URL API, status backend, CORS, dan Console
-Detail tidak tampil	Error saat memproses data atau memperbarui DOM	Periksa Console browser dan struktur respons JSON
-
-12. Checklist Sebelum Demo
-Apache dan MySQL XAMPP berjalan.
-Database mini_project_db tersedia.
-Tabel products memiliki data dengan ID 2.
-File .env berisi konfigurasi yang benar.
-node test-db.js berhasil.
-Backend berjalan pada port 3000.
-Endpoint /api/products/2 mengembalikan JSON.
-CORS mengizinkan origin frontend.
-Frontend dibuka melalui Live Server.
-product-2.js menggunakan URL API yang benar.
-Detail Laptop B tampil tanpa error pada Console.
-
-13. Catatan Pengembangan
-
-Proyek ini menggunakan pemisahan tanggung jawab antara frontend, controller, model, dan database.
-
-Frontend bertanggung jawab menampilkan informasi kepada pengguna.
-Controller mengatur alur permintaan dan respons HTTP.
-Model menangani query database.
-Database menyimpan data produk secara persisten.
-
-Pemisahan ini memudahkan debugging, pemeliharaan, dan pengembangan fitur berikutnya, seperti daftar produk dinamis, pencarian, filter, tambah produk, edit produk, dan hapus produk.
-
-TechStore — Mini Project Fullstack
-
-Dibuat sebagai latihan integrasi frontend, REST API, backend Node.js/Express, dan database MySQL.
+Proyek: TechStore — Proyek Mini Full Stack
+Fokus: Menambahkan Interaktivitas pada Website Menggunakan JavaScript
+Pengembang: Bramantio Ghany Suryoleksono
